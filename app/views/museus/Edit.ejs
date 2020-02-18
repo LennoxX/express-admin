@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<title>Guia Maranhão de Encantos</title>
+
+	<!-- Custom fonts for this template-->
+	<link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+	<link
+		href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+		rel="stylesheet">
+
+	<!-- Custom styles for this template-->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+	<link rel="stylesheet" href="/editor/css/froala_editor.css" type="text/css">
+	<link rel="stylesheet" href="/editor/css/froala_style.css" type="text/css">
+	<link rel="stylesheet" href="/editor/css/plugins/code_view.css" type="text/css">
+	<link rel="stylesheet" href="/editor/css/plugins/table.css" type="text/css">
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+	integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+	crossorigin=""/>
+	<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+	integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+	crossorigin=""></script>
+
+	<style>
+		#map {
+			width: 100%;
+			height: 250px;
+		}
+		#mapid { height: 250px; }
+	</style>
+
+
+</head>
+
+<body id="page-top">
+
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<!-- Menu -->
+		<%- include ../template/menu.ejs %>
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<!-- Main Content -->
+			<div id="content">
+
+				<!-- Header -->
+				<%- include ../template/topo.ejs %>
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<!-- Page Heading -->
+					<h1 class="h3 mb-4 text-gray-800">Editar casa de cultura</h1>
+
+					<div class="row">
+
+						<!-- Earnings (Monthly) Card Example -->
+						<div class="col-xl-12 col-md-12 mb-4">
+							<div class="card border-left-warning shadow h-100 py-2">
+								<div class="card-body">
+
+									<div class="row no-gutters align-items-center">
+										<div class="col mr-2">
+											<form class="user" method="POST" action="/app/<%= page %>/edit/submit"
+												enctype="multipart/form-data">
+
+												<div class="form-group row">
+													<div class="col-sm-4">
+														Título
+														<input type="text" class="form-control" id="titulo"
+															name="titulo" value="<%= titulo %>">
+													</div>
+													<div class="col-sm-2">
+														Cidade
+														<select class="form-control" id="cidade" name="cidade">
+															<option value="">Selecione Cidade</option>
+															<% for (var i = 0; i < itensCidades.length; i++) { %>
+															<% if (itensCidades[i].status === true ) { %>
+															<option value="<%- itensCidades[i].id %>"
+																<%= itensCidades[i].id === cidadeId ? 'selected' : '' %>>
+																<%- itensCidades[i].nome %></option>
+															<% } %>
+															<% } %>
+														</select>
+													</div>
+													<div class="col-sm-2">
+														Ordenação
+														<input type="number" class="form-control" id="ordenacao"
+															name="ordenacao" value="<%= ordenacao %>">
+													</div>
+												</div>
+
+												<div class="form-group row">
+													<div class="col-sm-4">
+														<div id="mapid"></div>
+													</div>
+													<div class="col-sm-4">
+														<img src="data:image/png;base64, <%= imagem %>" width="350px" />
+													</div>
+												</div>
+												<div class="form-group row">
+													<div class="col-sm-2">
+														Latitude
+														<input type="text" class="form-control" id="lat" name="lat"
+															value="<%= latitude %>" required>
+													</div>
+													<div class="col-sm-2">
+														Longitude
+														<input type="text" class="form-control" id="long" name="long"
+															value="<%= longitude %>" required>
+													</div>
+													<div class="col-sm-4"><br />
+														Imagem (até 200kb - apenas JPG)<br/>
+														<input type="file" accept="image/jpg" name="photo">
+													</div>
+												</div>
+
+
+												<div class="form-group row">
+													<div class="col-sm-8">
+														Sobre
+														<textarea id="descricao" name="descricao"
+															placeholder="Sobre..."><%= descricao %>
+														  </textarea>
+													</div>
+												</div>
+
+												<div class="form-group row">
+													<div class="col-sm-8">
+														Sobre (Espanhol)
+														<textarea id="descricao" name="descricao_es"
+															placeholder="Sobre..."><%= descricao_es %>
+														  </textarea>
+													</div>
+												</div>
+
+												<div class="form-group row">
+													<div class="col-sm-8">
+														Sobre (Inglês)
+														<textarea id="descricao" name="descricao_en"
+															placeholder="Sobre..."><%= descricao_en %>
+														  </textarea>
+													</div>
+												</div>
+
+												<div class="form-group row">
+													<div class="col-sm-6">
+														<label>Status:</label><br>
+														<label>
+															<input type="radio" name="status" value="true"
+																<%= status === true ? 'checked' : '' %>>Ativo
+														</label>
+														<label>
+															<input type="radio" name="status" value="false"
+																<%= status === false ? 'checked' : '' %>>Inativo
+														</label>
+													</div>
+												</div>
+
+												<div class="form-group row">
+													<div class="col-sm-4">
+														<input type="submit" value="Salvar"
+															class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" />
+														<a href="/app/<%= page %>/list"
+															class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm">Cancelar</a>
+													</div>
+												</div>
+												<input type="hidden" id="id" name="id" value="<%= id %>">
+												<input type="hidden" id="galeriaId" name="galeriaId"
+													value="<%= galeriaId %>">
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+				<!-- /.container-fluid -->
+
+			</div>
+			<!-- End of Main Content -->
+
+			<!-- Rodapé -->
+			<%- include ../template/rodape.ejs %>
+
+		</div>
+		<!-- End of Content Wrapper -->
+
+	</div>
+	<!-- End of Page Wrapper -->
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top">
+		<i class="fas fa-angle-up"></i>
+	</a>
+
+	<script>
+		// Initialize and add the map
+		/*function initMap() {
+			// The location of Uluru
+			var uluru = { lat: <%= latitude %>, lng: <%= longitude %> };
+		// The map, centered at Uluru
+		var map = new google.maps.Map(
+			document.getElementById('map'), { zoom: 12, center: uluru });
+		// The marker, positioned at Uluru
+		var marker = new google.maps.Marker({ position: uluru, map: map });
+		} */
+
+		var map = L.map('mapid').setView([<%= latitude %>, <%= longitude %>], 13);
+
+		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map);
+		L.marker([<%= latitude %>, <%= longitude %>]).addTo(map)
+			.bindPopup('<%= titulo %>')
+			.openPopup();
+	</script>
+	<!--Load the API from the specified URL
+				* The async attribute allows the browser to render the page while the API loads
+				* The key parameter will contain your own API key (which is not needed for this tutorial)
+				* The callback parameter executes the initMap() function
+				-->
+	<!--<script async defer
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFlCYUsX1trNkoIGQN7kcp8IHwS-8Ueww&callback=initMap">
+		</script> -->
+	<!-- Bootstrap core JavaScript-->
+	<script src="/vendor/jquery/jquery.min.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script src="/js/sb-admin-2.min.js"></script>
+
+	<!-- Page level plugins -->
+	<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+	<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+	<!-- Page level custom scripts -->
+	<script src="/js/demo/datatables-demo.js"></script>
+
+	<script type="text/javascript" src="/editor/js/froala_editor.min.js"></script>
+	<script type="text/javascript" src="/editor/js/froala_editor.min.js"></script>
+	<script type="text/javascript" src="/editor/js/plugins/align.min.js"></script>
+	<script type="text/javascript" src="/editor/js/plugins/code_beautifier.min.js"></script>
+	<script type="text/javascript" src="/editor/js/plugins/code_view.min.js"></script>
+	<script type="text/javascript" src="/editor/js/plugins/draggable.min.js"></script>
+	<script type="text/javascript" src="/editor/js/plugins/lists.min.js"></script>
+	<script type="text/javascript" src="/editor/js/plugins/paragraph_format.min.js"></script>
+	<script type="text/javascript" src="/editor/js/plugins/paragraph_style.min.js"></script>
+	<script type="text/javascript" src="/editor/js/plugins/table.min.js"></script>
+	<script type="text/javascript" src="/editor/js/plugins/entities.min.js"></script>
+
+	<script>
+		(function () {
+			new FroalaEditor('#descricao', {
+				placeholderText: null,
+			})
+		})()
+	</script>
+
+</body>
+
+</html>

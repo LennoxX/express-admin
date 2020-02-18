@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<title>Guia Maranhão de Encantos</title>
+
+	<!-- Custom fonts for this template-->
+	<link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+	<link
+		href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+		rel="stylesheet">
+
+	<!-- Custom styles for this template-->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+	
+	<link rel="stylesheet" href="/editor/css/froala_editor.css" type="text/css">
+	<link rel="stylesheet" href="/editor/css/froala_style.css" type="text/css">
+	<link rel="stylesheet" href="/editor/css/plugins/code_view.css" type="text/css">
+	<link rel="stylesheet" href="/editor/css/plugins/table.css" type="text/css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" type="text/javascript"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
+	<script>
+		function temGenericImg(valor, idimg) {
+			var value = valor.value;
+			if(value == 'true') {
+				$(idimg).prop('disabled', false);
+			} else {
+				$(idimg).prop('disabled', true);
+			}
+		}
+	</script>
+
+</head>
+
+<body id="page-top">
+
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<!-- Menu -->
+		<%- include ../template/menu.ejs %>
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<!-- Main Content -->
+			<div id="content">
+
+				<!-- Header -->
+				<%- include ../template/topo.ejs %>
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<!-- Page Heading -->
+					<h1 class="h3 mb-4 text-gray-800">Cadastrar Cidade</h1>
+
+					<div class="row">
+
+						<!-- Earnings (Monthly) Card Example -->
+						<div class="col-xl-12 col-md-12 mb-4">
+							<div class="card border-left-warning shadow h-100 py-2">
+								<div class="card-body">
+									<div class="row no-gutters align-items-center">
+										<div class="col mr-2">
+											<form class="user" method="POST" action="/app/<%= page %>/create/submit"
+												enctype="multipart/form-data">
+
+												<div class="form-group row">
+													<div class="col-sm-4">
+														Nome:
+														<input type="text" class="form-control" id="nome" name="nome"
+															required>
+													</div>
+													<div class="col-sm-4">
+														Polo Turístico:
+														<select class="form-control" id="polo" name="polo">
+															<option value="">Selecione Polo Turístico</option>
+															<% for (var i = 0; i < itensPolos.length; i++) { %>
+															<% if (itensPolos[i].status === true ) { %>
+															<option value="<%- itensPolos[i].id %>">
+																<%- itensPolos[i].nome %></option>
+															<% } %>
+															<% } %>
+														</select>
+													</div>
+												</div>
+
+												<div class="form-group row">
+													<div class="col-sm-2">
+														Latitude:
+														<input type="text" class="form-control" id="lat" name="lat"
+															required>
+													</div>
+													<div class="col-sm-2">
+														Longitude:
+														<input type="text" class="form-control" id="long" name="long"
+															required>
+													</div>
+													<div class="col-sm-4"><br/>
+														Imagem (até 200kb - apenas JPG)<br/>
+														<input type="file" accept="image/jpg" name="photo" required>
+													</div>
+												</div>
+
+												<div class="form-group row">
+													<div class="col-sm-8">
+														Sobre:
+														<textarea id="texto" name="texto" placeholder="Sobre...">
+													  </textarea>
+													</div>
+												</div>
+
+												<div class="form-group row">
+													<div class="col-sm-8">
+														Sobre (Espanhol):
+														<textarea id="texto" name="texto_es" placeholder="Sobre...">
+													  </textarea>
+													</div>
+												</div>
+
+												<div class="form-group row">
+													<div class="col-sm-8">
+														Sobre (Inglês):
+														<textarea id="texto" name="texto_en" placeholder="Sobre...">
+													  </textarea>
+													</div>
+												</div>
+
+												<div class="form-group row">
+													<div class="col-sm-8">
+														Como Chegar:
+														<textarea id="comoChegar" name="comoChegar" placeholder="Como chegar...">
+													  </textarea>
+													</div>
+												</div>
+
+												<div class="form-group row">
+													<div class="col-sm-8">
+														Como Chegar (Espanhol):
+														<textarea id="comoChegar" name="comoChegar_es" placeholder="Como chegar...">
+													  </textarea>
+													</div>
+												</div>
+
+												<div class="form-group row">
+													<div class="col-sm-8">
+														Como Chegar (Inglês):
+														<textarea id="comoChegar" name="comoChegar_en" placeholder="Como chegar...">
+													  </textarea>
+													</div>
+												</div>
+
+												<div class="form-group">
+													<label>Status:</label>
+													<div class="radio">
+														<label>
+															<input type="radio" name="status" value="true" checked>Ativo
+														</label>
+													</div>
+													<div class="radio">
+														<label>
+															<input type="radio" name="status" value="false">Inativo
+														</label>
+													</div>
+												</div>
+
+												<div class="form-group row">
+													<div class="col-sm-2">
+														Tem Casa de Cultura:
+														<select name="temMuseu" id="temMuseu" class="form-control" onchange="temGenericImg(this, '#imgMuseu')">
+															<option value="true">Sim</option>
+															<option value="false">Não</option>
+														</select>
+													</div>
+													<div class="col-sm-3">
+														Imagem (até 200kb - apenas JPG)
+														<input type="file" accept="image/jpg" name="imgMuseu" id="imgMuseu" class="form-control">
+													</div>
+												</div>
+
+												<div class="form-group row">
+													<div class="col-sm-2">
+														Tem Praia:
+														<select name="temPraia" id="temPraia" class="form-control" onchange="temGenericImg(this, '#imgPraia')">
+															<option value="true">Sim</option>
+															<option value="false">Não</option>
+														</select>
+													</div>
+													<div class="col-sm-3">
+														Imagem (até 200kb - apenas JPG)
+														<input type="file" accept="image/jpg" name="imgPraia" id="imgPraia" class="form-control">
+													</div>
+												</div>
+
+												<div class="form-group row">
+													<div class="col-sm-2">
+														Tem Praça:
+														<select name="temPraca" id="temPraca" class="form-control" onchange="temGenericImg(this, '#imgPraca')">
+															<option value="true">Sim</option>
+															<option value="false">Não</option>
+														</select>
+													</div>
+													<div class="col-sm-3">
+														Imagem (até 200kb - apenas JPG)
+														<input type="file" accept="image/jpg" name="imgPraca" id="imgPraca" class="form-control">
+													</div>
+												</div>
+
+												<div class="form-group row">
+													<div class="col-sm-2">
+														Tem Igreja:
+														<select name="temIgreja" id="temIgreja" class="form-control" onchange="temGenericImg(this, '#imgIgreja')">
+															<option value="true">Sim</option>
+															<option value="false">Não</option>
+														</select>
+													</div>
+													<div class="col-sm-3">
+														Imagem (até 200kb - apenas JPG)
+														<input type="file" accept="image/jpg" name="imgIgreja" id="imgIgreja" class="form-control">
+													</div>
+												</div>
+
+												<div class="form-group row">
+													<div class="col-sm-2">
+														Tem Teatro:
+														<select name="temTeatro" id="temTeatro" class="form-control" onchange="temGenericImg(this, '#imgTeatro')">
+															<option value="true">Sim</option>
+															<option value="false">Não</option>
+														</select>
+													</div>
+													<div class="col-sm-3">
+														Imagem (até 200kb - apenas JPG)
+														<input type="file" accept="image/jpg" name="imgTeatro" id="imgTeatro" class="form-control">
+													</div>
+												</div>
+
+												<div class="form-group row">
+													<div class="col-sm-2">
+														Tem Gastronomia:
+														<select name="temGastronomia" id="temGastronomia" class="form-control" onchange="temGenericImg(this, '#imgGastronomia')">
+															<option value="true">Sim</option>
+															<option value="false">Não</option>
+														</select>
+													</div>
+													<div class="col-sm-3">
+														Imagem (até 200kb - apenas JPG)
+														<input type="file" accept="image/jpg" name="imgGastronomia" id="imgGastronomia" class="form-control">
+													</div>
+												</div>
+
+												<div class="form-group row">
+													<div class="col-sm-2">
+														Tem Atrativos Turísticos:
+														<select name="temPontosTuristicos" id="temPontosTuristicos" class="form-control" onchange="temGenericImg(this, '#imgPontosTuristicos')">
+															<option value="true">Sim</option>
+															<option value="false">Não</option>
+														</select>
+													</div>
+													<div class="col-sm-3">
+														Imagem (até 200kb - apenas JPG)
+														<input type="file" accept="image/jpg" name="imgPontosTuristicos" id="imgPontosTuristicos" class="form-control">
+													</div>
+												</div>
+
+												<div class="form-group row">
+													<div class="col-sm-4">
+														<input type="submit" value="Salvar"
+															class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" />
+														<a href="/app/<%= page %>/list"
+															class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm">Cancelar</a>
+													</div>
+												</div>
+
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+				</div>
+				<!-- /.container-fluid -->
+
+			</div>
+			<!-- End of Main Content -->
+
+			<!-- Rodapé -->
+			<%- include ../template/rodape.ejs %>
+
+		</div>
+		<!-- End of Content Wrapper -->
+
+	</div>
+	<!-- End of Page Wrapper -->
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top">
+		<i class="fas fa-angle-up"></i>
+	</a>
+
+
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="/vendor/jquery/jquery.min.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script src="/js/sb-admin-2.min.js"></script>
+
+	<!-- Page level plugins -->
+	<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+	<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+	<!-- Page level custom scripts -->
+	<script src="/js/demo/datatables-demo.js"></script>
+
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.js"></script>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/mode/xml/xml.min.js"></script>
+
+	<script type="text/javascript" src="/editor/js/froala_editor.min.js"></script>
+	<script type="text/javascript" src="/editor/js/froala_editor.min.js"></script>
+	<script type="text/javascript" src="/editor/js/plugins/align.min.js"></script>
+	<script type="text/javascript" src="/editor/js/plugins/code_beautifier.min.js"></script>
+	<script type="text/javascript" src="/editor/js/plugins/code_view.min.js"></script>
+	<script type="text/javascript" src="/editor/js/plugins/draggable.min.js"></script>
+	<script type="text/javascript" src="/editor/js/plugins/lists.min.js"></script>
+	<script type="text/javascript" src="/editor/js/plugins/paragraph_format.min.js"></script>
+	<script type="text/javascript" src="/editor/js/plugins/paragraph_style.min.js"></script>
+	<script type="text/javascript" src="/editor/js/plugins/table.min.js"></script>
+	<script type="text/javascript" src="/editor/js/plugins/entities.min.js"></script>
+
+	<script>
+		(function () {
+			new FroalaEditor('#texto',{
+				placeholderText: null,
+			})
+			new FroalaEditor('#comoChegar',{
+				placeholderText: null,
+			})
+		})()
+	</script>
+
+
+</body>
+
+</html>

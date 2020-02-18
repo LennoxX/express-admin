@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<title>Guia Maranhão de Encantos</title>
+
+	<!-- Custom fonts for this template-->
+	<link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+	<link
+		href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+		rel="stylesheet">
+
+	<!-- Custom styles for this template-->
+	<link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+	<!-- Custom styles for this page -->
+	<link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js" type="text/javascript"></script>
+
+	<script type="text/javascript" src="/js/postapi-gastronomia.js"></script>
+
+	<script>
+		$(document).ready( function() {
+			$('#tableList').dataTable({
+				ordering: true
+			});
+		});
+
+		function setaDadosModal(valor) {
+			document.getElementById('campo').value = valor;
+		}
+	</script>
+
+</head>
+
+<body id="page-top">
+
+	<!-- Page Wrapper -->
+	<div id="wrapper">
+
+		<!-- Menu -->
+		<%- include ../template/menu.ejs %>
+
+		<!-- Content Wrapper -->
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<!-- Main Content -->
+			<div id="content">
+
+				<!-- Header -->
+				<%- include ../template/topo.ejs %>
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<!-- Page Heading -->
+					<h1 class="h3 mb-4 text-gray-800">Listagem de Gastronomia</h1>
+
+					<%- messages() %>
+
+					<div class="card shadow mb-4">
+						<div class="card-header py-3">
+							<!--<h6 class="m-0 font-weight-bold text-primary">Listagem</h6>-->
+
+							<a href="/app/<%= page %>/create" class="btn btn-primary btn-circle btn-sm" style="float: right;">
+								<i class="fas fa-plus"></i>
+							</a>
+
+						</div>
+
+
+						<div class="card-body">
+							<div class="form-group row form-inline" style="margin-bottom: 12px;">
+								<div class="col-sm-8">
+									Visualizar
+									<select name="size" id="size" class="form-control" onchange="mudaSize('gastronomia')">
+										<option value="10">10</option>
+										<option value="25">25</option>
+										<option value="50">50</option>
+										<option value="100">100</option>
+									</select>
+									registros por página
+								</div>
+								<div class="col-sm-4">
+									Pesquisar por nome
+									<input type="text" class="form-control" id="busca" onchange="buscaTopico(this.value, 'gastronomia');"><br/>
+								</div>
+							</div>
+							<div class="table-responsive">
+								<table class="table table-bordered" width="100%" cellspacing="0">
+									<thead>
+										<tr>
+											<th>Ordenação</th>
+											<th>Nome</th>
+											<th>Cidade</th>
+											<th>Status</th>
+											<th>Ação</th>
+										</tr>
+									</thead>
+									<tfoot>
+										<tr>
+											<th>Ordenação</th>
+											<th>Nome</th>
+											<th>Cidade</th>
+											<th>Status</th>
+											<th>Ação</th>
+										</tr>
+									</tfoot>
+									<tbody id="table_body">
+										<% for (var i = 0; i < itens.length; i++) { %>
+										<tr>
+											<td><%= itens[i].ordenacao %></td>
+											<td><%= itens[i].titulo %></td>
+											<td><%= itens[i].cidade.nome %></td>
+											<td><%= itens[i].status === true ? 'Ativo' : 'Inativo' %></td>
+											<td>
+												<a href="/app/<%= page %>/edit/<%= itens[i].id %>" class="btn btn-warning btn-circle btn-sm">
+													<i class="fas fa-edit"></i>
+												</a> <!--
+												<a href="/app/<%= itens[i].titulo %>/galerias/<%= itens[i].galeria.id %>/list"
+													class="btn btn-success btn-circle btn-sm">
+													<i class="fas fa-images"></i> -->
+												<a href="#" class="btn btn-danger btn-circle btn-sm" data-toggle="modal"
+													data-target="#logoutModal" onclick="setaDadosModal('<%= itens[i].id %>')">
+													<i class="far fa-trash-alt"></i>
+												</a>
+											</td>
+										</tr>
+										<% } %>
+									</tbody>
+								</table>
+								<nav aria-label="navigation">
+									<ul class="pagination justify-content-end">
+										<li id="page-anterior" data-page="0" class="page-item disabled">
+											<a class="page-link disabled" id="page-link-anterior"
+												href="javascript:void(0);">Anterior</a>
+										</li>
+										<div id="page-number"
+											style="margin-left: 16px; margin-right: 16px; margin-top: 8px;">
+											<%= number+1 %> de <%= totalPages %></div>
+										<li id="page-posterior" data-page="1" class="page-item">
+											<a class="page-link" id="page-link-posterior"
+												href="javascript:void(0);">Próxima</a>
+										</li>
+									</ul>
+								</nav>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<!-- /.container-fluid -->
+
+			</div>
+			<!-- End of Main Content -->
+
+			<!-- Rodapé -->
+			<%- include ../template/rodape.ejs %>
+
+		</div>
+		<!-- End of Content Wrapper -->
+
+	</div>
+	<!-- End of Page Wrapper -->
+
+	<!-- Scroll to Top Button-->
+	<a class="scroll-to-top rounded" href="#page-top">
+		<i class="fas fa-angle-up"></i>
+	</a>
+
+	<!-- Logout Modal-->
+	<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Atenção!</h5>
+					<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<form id="modalExemplo" method="post" action="/app/<%= page %>/delete/">
+					<input type="hidden" name="id" id="campo">
+					<div class="modal-body">Você realmente deseja apagar este item?</div>
+					<div class="modal-footer">
+						<button class="d-none d-sm-inline-block btn btn-sm btn-warning shadow-sm" type="button"
+							data-dismiss="modal">Cancelar</button>
+						<input type="submit" value="Excluir" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm" />
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<!-- Bootstrap core JavaScript-->
+	<script src="/vendor/jquery/jquery.min.js"></script>
+	<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+	<!-- Core plugin JavaScript-->
+	<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+	<!-- Custom scripts for all pages-->
+	<script src="/js/sb-admin-2.min.js"></script>
+
+	<!-- Page level plugins -->
+	<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+	<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+	<script>
+		$('#page-posterior').click(function () {
+			var page = $(this).attr('data-page');
+			var pageAnterior = $("#page-anterior").attr('data-page');
+			var busca = $("#busca").val();
+			var size = $("#size").val();
+			var data;
+			if (busca != null) {
+				data = { page: page, busca: busca, size: size };
+			} else {
+				data = { page: page, size: size };
+			}
+
+			postApiPosterior(data, page, pageAnterior, 'gastronomia');
+
+		});
+
+		$('#page-anterior').click(function () {
+			var pagePosterior = $('#page-posterior').attr('data-page');
+			var pageAnterior = $("#page-anterior").attr('data-page');
+			var busca = $("#busca").val();
+			var size = $("#size").val();
+			var data;
+			if (busca != null) {
+				data = { page: pageAnterior - 1, busca: busca, size: size };
+			} else {
+				data = { page: pageAnterior - 1, size: size };
+			}
+			
+			if (pageAnterior > 0) {
+				postApiAnterior(data, pageAnterior, pagePosterior, 'gastronomia');
+			}
+		});
+	</script>
+
+</body>
+
+</html>
